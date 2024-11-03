@@ -1,0 +1,36 @@
+<!-- MENU -->
+{% load static %}
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'imgs/score-watch.png' %}" alt="Logo Score Watch"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i style="color:#fff; font-size: 25px;" class="fa-solid fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li>
+                <a class="nav-link" href="{% url 'filmes' %}">Filmes</a> 
+            </li>
+            <li>
+                <a class="nav-link" href="{% url 'series' %}">Séries</a> 
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ user.username }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'perfil' %}">Meu perfil</a>                  
+                    <a class="dropdown-item" href="{% url 'logout' %}">Sair</a>
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cadastro' %}">Cadastre-se</a>
+            </li>
+            <li>
+                <a class="nav-link" href="{% url 'login' %}">Login</a> 
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav><br><br>

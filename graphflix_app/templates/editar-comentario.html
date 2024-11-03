@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    {% include 'head.html' %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8"/>
+    <title>Score Watch - Editar comentário</title>
+</head>
+<body>
+    {% include 'menu.html' %}
+
+    {% block content %}
+        <h2 style="margin-top: 7%" class="topico">Editar Comentário</h2>
+        <form method="post" style="margin-bottom: 6%">
+            {% csrf_token %}
+            {{ comentario_form.as_p }}
+            <button class="btn-score-watch" type="submit">Salvar Alterações</button>
+        </form>
+    {% endblock %}
+
+    {% include 'footer.html' %}
+
+</body>
+</html>
+

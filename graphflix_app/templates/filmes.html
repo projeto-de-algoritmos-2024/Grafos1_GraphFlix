@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    {% include 'head.html' %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8"/>
+    <title>Score Watch :: Filmes</title>
+</head>
+<body>
+  {% include 'menu.html' %}
+
+    <div class="painel-titulos">
+        <h1 class="titulos-titulo">Filmes </h1>  
+        {% for filme in filmes %}
+        <a href="{% url 'pagina_filme' url_slug=filme.url_slug %}">
+            <div class="container-titulos">
+            <img class="image" src="{{ filme.imagem_capa.url }}" alt="{{ filme.titulo }} - Capa">
+            <div class="overlay">
+                <p>{{ filme.titulo }}</p>
+            </div>
+            </div>  
+        </a>
+        {% endfor %}
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

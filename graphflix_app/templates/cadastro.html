@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% include 'head.html' %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8"/>
+    <title>Score Watch :: Cadastro</title>
+</head>
+<body>
+    {% include 'menu.html' %}
+        <div class="container-cadastro-login">
+            <form method="post">
+                {% csrf_token %}
+                <div class="head">
+                    <span>Cadastre-se</span>
+                </div>
+                <div class="inputs">
+                    <input type="name" name="first_name" placeholder="Nome" required>
+                    <input type="name" name="last_name" placeholder="Sobrenome" required>
+                    <input type="text" name="username" placeholder="Usuário" required>
+                    <input type="email" name="email" placeholder="E-mail" required><br>
+                    <input type="password" name="password" placeholder="Senha" required><br>
+                </div>
+                <button type="submit">Registrar</button>
+            </form>
+            <div class="form-footer">
+                <p style="color:#000">Já possui uma conta? <a href="{% url 'login' %}">Login</a></p> 
+            </div>
+        </div>    
+    {% include 'footer.html' %}
+</body>
+</html>

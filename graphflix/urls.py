@@ -1,0 +1,45 @@
+"""
+URL configuration for graphflix project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+from graphflix_app import views
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('home', views.home, name='home'),
+    path('cadastro/', views.cadastro, name='cadastro'),
+    path('login/', views.realizar_login, name='login'),
+    path('perfil/', views.perfil, name='perfil'),
+    path('editar-perfil/', views.editar_perfil, name='editar-perfil'),
+    path('logout/', views.fazer_logout, name='logout'),
+    path('filme/<slug:url_slug>/', views.pagina_filme, name='pagina_filme'),
+    path('serie/<slug:url_slug>/', views.pagina_serie, name='pagina_serie'),
+    path('filmes', views.filmes, name='filmes'),
+    path('series', views.series, name='series'),
+    path('<str:tipo>/<str:url_slug>/editar_comentario/<int:comentario_id>/', views.editar_comentario, name='editar_comentario'),
+    path('<str:tipo>/<str:url_slug>/excluir_comentario/<int:comentario_id>/', views.excluir_comentario, name='excluir_comentario'),
+
+
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

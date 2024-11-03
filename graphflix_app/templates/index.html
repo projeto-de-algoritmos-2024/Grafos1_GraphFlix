@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    {% include 'head.html' %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8"/>
+    <title>Score Watch</title>
+</head>
+<body>
+  {% include 'menu.html' %}
+
+
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img class="d-block w-100" src="{% static 'imgs/sw-bg.png' %}" alt="First slide">
+      </div>
+      {% for filme in filmes %}
+        <div class="carousel-item">
+          <a href="{% url 'pagina_filme' url_slug=filme.url_slug %}">
+            <img class="d-block img-carrossel" src="{{ filme.imagem_bg.url }}" alt="{{ filme.titulo }}">
+          </a>
+          <div class="carousel-caption d-none d-md-block">
+            <a href="{% url 'pagina_filme' url_slug=filme.url_slug %}">
+              <h5>{{ filme.titulo }}</h5>
+              <p><i class="fa-regular fa-clock"></i> {{ filme.duracao }}. <i class="fa-regular fa-calendar"></i> {{ filme.ano_lancamento }}</p>
+              <p>{{ filme.sinopse|truncatechars:150 }}</p>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+  <div class="painel-titulos">
+    <h1 class="titulos-titulo">
+      Filmes 
+      <span><a class="ver-mais-titulos" href="{% url 'filmes' %}"><i class="fa-solid fa-angles-right"></i>Veja mais</a></span>
+    </h1>  
+      {% for filme in filmes|slice:":6" %}
+      <a href="{% url 'pagina_filme' url_slug=filme.url_slug %}">
+        <div class="container-titulos">
+          <img class="image" src="{{ filme.imagem_capa.url }}" alt="{{ filme.titulo }} - Capa">
+          <div class="overlay">
+            <p>{{ filme.titulo }}</p>
+          </div>
+        </div>  
+      </a>
+      {% endfor %}
+  </div>
+
+  <div class="painel-titulos">
+    <h1 class="titulos-titulo">
+      Séries
+      <span><a class="ver-mais-titulos" href="{% url 'series' %}"><i class="fa-solid fa-angles-right"></i>Veja mais</a></span>
+    </h1> 
+      {% for serie in series|slice:":6" %}
+        <a href="{% url 'pagina_serie' url_slug=serie.url_slug %}">
+        <div class="container-titulos">
+          <img class="image" src="{{ serie.imagem_capa.url }}" alt="{{ serie.titulo }} - Capa">
+          <div class="overlay">
+            <p>{{ serie.titulo }}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}   
+  </div>   
+
+    {% include 'footer.html' %}
+</body>
+</html>
