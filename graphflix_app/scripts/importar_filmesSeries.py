@@ -12,7 +12,7 @@ TMDB_CREDITS_URL = f'https://api.themoviedb.org/3/{{media_type}}/{{media_id}}/cr
 RATE_LIMIT = 0.02  # Limite de 50 requisições por segundo (1/50 = 0.02s)
 
 def importar_filmes():
-    page = 1
+    page = 3
     while True:
         response = requests.get(f"{TMDB_MOVIES_URL}&page={page}")
         if response.status_code != 200:
@@ -54,6 +54,8 @@ def importar_filmes():
                     'avaliacao': filme_data.get('vote_average'),
                 }
             )
+
+            print(f"Importando filme: {filme_data['title']}")
             
             filme, _ = Filme.objects.update_or_create(
                 id_filme=filme_data['id'],
@@ -118,6 +120,8 @@ def importar_series():
                     'avaliacao': serie_data.get('vote_average'),
                 }
             )
+
+            print(f"Importando série: {serie_data['name']}")
 
             serie_obj, _ = Serie.objects.update_or_create(
                 id_serie=serie_data['id'],

@@ -11,10 +11,10 @@
 <body>
     {% include 'menu.html' %}
     <div style="background: radial-gradient(at 60% 20px, transparent 30%, rgba(21, 22, 22, 0.8) 55%, rgb(21, 22, 22) 100%) 100% 50% / cover, linear-gradient(transparent 80%, rgb(21, 22, 22) 100%), url(https://image.tmdb.org/t/p/original/{{ serie.titulo.backdropPath }}) no-repeat;
-    background-position: 100% 50%;">
+    background-position: 100% 50%; background-size: cover; margin-top: -60px;">
     
         <div class="bg-filtro">
-            <div class="container-filme-serie">
+            <div class="container-filme-serie" style="margin-top: 60px;">
                 <div class="banner-titulos">
                     <img src="https://image.tmdb.org/t/p/original/{{ serie.titulo.posterPath }}" alt="{{ serie.titulo }}">
                 </div>

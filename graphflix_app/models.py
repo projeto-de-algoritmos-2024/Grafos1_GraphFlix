@@ -11,8 +11,8 @@ class Titulo(models.Model):
     slug = models.SlugField(unique=True)
     dtLancamento = models.DateField()
     classificacao = models.CharField(max_length=5, blank=True)
-    posterPath = models.CharField(max_length=100)
-    backdropPath = models.CharField(max_length=100)
+    posterPath = models.CharField(max_length=100, blank=True, null=True)
+    backdropPath = models.CharField(max_length=100, blank=True, null=True)
     sinopse = models.CharField(max_length=500)
     avaliacao = models.FloatField(null=True)
 

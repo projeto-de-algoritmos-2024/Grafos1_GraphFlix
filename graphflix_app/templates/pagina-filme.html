@@ -11,10 +11,10 @@
 <body>
     {% include 'menu.html' %}
     <div style="background: radial-gradient(at 60% 20px, transparent 30%, rgba(21, 22, 22, 0.8) 55%, rgb(21, 22, 22) 100%) 100% 50% / cover, linear-gradient(transparent 80%, rgb(21, 22, 22) 100%), url(https://image.tmdb.org/t/p/original/{{ filme.titulo.backdropPath }}) no-repeat;
-    background-position: 100% 50%;">
+    background-position: 100% 50%; background-size: cover; margin-top: -60px;">
     
         <div class="bg-filtro">
-            <div class="container-filme-serie">
+            <div class="container-filme-serie" style="margin-top: 60px;">
                 <div class="banner-titulos">
                     <img src="https://image.tmdb.org/t/p/original/{{ filme.titulo.posterPath }}" alt="{{ filme.titulo }}">
                 </div>
@@ -32,13 +32,13 @@
                     <p><i class="fa-solid fa-users"></i> Elenco: {{ elenco }}</p> 
 
                     <!-- Botão de favoritos -->
-                    <form action="{% url 'toggle_favorito' filme.titulo.id %}" method="post">
+                    <form action="{% url 'toggle_favorito' filme.titulo.id %}" method="post" style="text-align: left;">
                         {% csrf_token %}
-                        <button type="submit" class="btn-favorito">
+                        <button type="submit" class="btn" style="width: 250px;">
                             {% if is_favorito %}
-                                Remover dos Favoritos
+                            <i class="fa-solid fa-xmark"></i> Remover dos Favoritos
                             {% else %}
-                                Adicionar aos Favoritos
+                            <i class="far fa-heart"></i> Adicionar aos Favoritos
                             {% endif %}
                         </button>
                     </form>
