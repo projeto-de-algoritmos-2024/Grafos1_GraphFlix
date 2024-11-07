@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    {% include 'head.html' %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8"/>
+    <title>Recomendações - Score Watch</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+  {% include 'menu.html' %}
+
+
+  <div id="recomendacoes" style="background: #000;">
+    <p class="" style="text-align: center; padding: 40px 10px 10px 10px;">Configure abaixo seus gêneros favoritos e a nota mínima (TMDb) para os títulos.</p>
+
+ 
+    <form method="post" style="color: #fff;">
+      {% csrf_token %}
+      <div class="form-group">
+          <label for="nota_minima" style="font-weight: bold; font-size: 18px;">Nota mínima:</label>
+          <input class="inputs" type="number" name="nota_minima" id="nota_minima" value="{{ nota_minima }}" required>
+      </div>
+  
+      <fieldset>
+          <legend class="topico" style="padding: 10px;">Seus gêneros favoritos:</legend>
+          <div class="checkbox-container" s>
+              {% for genero in generos %}
+                  <div class="checkbox-item">
+                      <input type="checkbox" name="generos" value="{{ genero.id }}" id="genero_{{ genero.id }}"
+                             {% if genero.id in generos_preferidos %}checked{% endif %}>
+                      <label for="genero_{{ genero.id }}">{{ genero.nome_genero }}</label>
+                  </div>
+              {% endfor %}
+          </div>
+      </fieldset>
+      <button  class="btn" style="width: 180px;" type="submit">Salvar Preferências</button>
+  </form>
+  
+
+
+  </div>
+
+  <div class="painel-titulos" style="background: radial-gradient(at 60% 80%, transparent 30%, rgba(0, 0, 0, 0.15) 90%, rgba(0, 0, 0, 0.1) 95%, rgba(0, 0, 0, 0) 100%) 100% 50% / cover, linear-gradient(rgb(0, 0, 0) 0%, transparent 90%);">
+    <h1 class="titulos-titulo">
+      Filmes 
+      <span><a class="ver-mais-titulos" href="{% url 'filmes' %}"><i class="fa-solid fa-angles-right"></i>Veja mais</a></span>
+    </h1>  
+      {% for filme in filmes|slice:":6" %}
+      <a href="{% url 'pagina_filme' url_slug=filme.titulo.slug %}">
+        <div class="container-titulos">
+          <img class="image" src="https://image.tmdb.org/t/p/original/{{ filme.titulo.posterPath }}" alt="{{ filme.titulo }} - Capa">
+          <div class="overlay">
+            <p>{{ filme.titulo.titulo }}</p>
+          </div>
+        </div>  
+      </a>
+      {% endfor %}
+  </div>
+
+  <div class="painel-titulos">
+    <h1 class="titulos-titulo">
+      Séries
+      <span><a class="ver-mais-titulos" href="{% url 'series' %}"><i class="fa-solid fa-angles-right"></i>Veja mais</a></span>
+    </h1> 
+      {% for serie in series|slice:":6" %}
+        <a href="{% url 'pagina_serie' url_slug=serie.titulo.slug %}">
+        <div class="container-titulos">
+          <img class="image" src="https://image.tmdb.org/t/p/original/{{ serie.titulo.posterPath }}" alt="{{ serie.titulo }} - Capa">
+          <div class="overlay">
+            <p>{{ serie.titulo }}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}   
+  </div>   
+
+
+    {% include 'footer.html' %}
+</body>
+
+</html>

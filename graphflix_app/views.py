@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from .models import Filme, Serie, Titulo, Genero
+from .models import Filme, Serie, Titulo, Genero, Prefere
 from django.utils.text import slugify
 from django.db.models import Avg
 from django.contrib import messages
@@ -111,3 +111,38 @@ def pagina_serie(request, url_slug):
     }
     return render(request, 'pagina-serie.html', context)
 
+
+@login_required
+def recomendacoes(request):
+    filmes = Filme.objects.all()
+    series = Serie.objects.all()
+    #return render(request, 'recomendacoes.html', {'filmes': filmes, 'series': series})
+
+    usuario = request.user 
+    generos = Genero.objects.all()
+
+    if request.method == 'POST':
+        nota_minima = request.POST.get('nota_minima')
+        usuario.notaMinima = float(nota_minima)
+        usuario.save()
+
+        # Captura e salva os gêneros
+        generos_selecionados = request.POST.getlist('generos')
+        Prefere.objects.filter(usuario=usuario).delete()
+        for genero_id in generos_selecionados:
+            genero = Genero.objects.get(id=genero_id)
+            Prefere.objects.create(usuario=usuario, genero=genero)
+
+        return redirect('recomendacoes') 
+
+    # Gêneros já selecionados pelo usuário
+    generos_preferidos = Prefere.objects.filter(usuario=usuario).values_list('genero_id', flat=True)
+
+    context = {
+        'generos': generos,
+        'generos_preferidos': generos_preferidos,
+        'nota_minima': str(usuario.notaMinima).replace(',', '.'),
+        'filmes': filmes, 
+        'series': series
+    }
+    return render(request, 'recomendacoes.html', context, )

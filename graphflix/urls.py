@@ -33,6 +33,7 @@ urlpatterns = [
     path('serie/<slug:url_slug>/', views.pagina_serie, name='pagina_serie'),
     path('filmes', views.filmes, name='filmes'),
     path('series', views.series, name='series'),
+    path('recomendacoes', views.recomendacoes, name='recomendacoes'),
    
 
 ]

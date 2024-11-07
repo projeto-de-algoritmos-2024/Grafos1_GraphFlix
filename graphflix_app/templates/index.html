@@ -12,6 +12,10 @@
   {% include 'menu.html' %}
 
 
+
+
+  
+
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
@@ -41,6 +45,24 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
+
+
+
+  {% if user.is_authenticated %}
+
+  <button class="btn">
+    <a href="{% url 'recomendacoes' %}">Ver recomendações</a>
+  </button>
+  
+  {% else %}
+  <br>
+    <p class="" style="text-align: center;">Faça <a href="{% url 'login' %}">login</a> e veja séries e filmes recomendados especialmente para você!</p>
+  {% endif %}
+
+
+
+
+
 
   <div class="painel-titulos">
     <h1 class="titulos-titulo">
