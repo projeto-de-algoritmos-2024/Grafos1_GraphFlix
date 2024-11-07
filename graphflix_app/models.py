@@ -26,7 +26,8 @@ class Titulo(models.Model):
 
 
 class Filme(models.Model):
-    titulo = models.OneToOneField(Titulo, on_delete=models.CASCADE, primary_key=True)
+    id_filme = models.IntegerField(primary_key=True)
+    titulo = models.OneToOneField(Titulo, on_delete=models.CASCADE)
     duracao = models.CharField(max_length=10)
     diretor = models.CharField(max_length=50)
 
@@ -35,7 +36,8 @@ class Filme(models.Model):
 
 
 class Serie(models.Model):
-    titulo = models.OneToOneField(Titulo, on_delete=models.CASCADE, primary_key=True)
+    id_serie = models.IntegerField(primary_key=True)
+    titulo = models.OneToOneField(Titulo, on_delete=models.CASCADE)
     qtd_temporadas = models.IntegerField()
     criador = models.CharField(max_length=50)
     situacao = models.CharField(max_length=15)
