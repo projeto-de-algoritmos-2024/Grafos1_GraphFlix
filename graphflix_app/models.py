@@ -8,13 +8,13 @@ class Usuario(AbstractUser):
 
 class Titulo(models.Model):
     titulo = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True)
     dtLancamento = models.DateField()
-    classificacao = models.CharField(max_length=5)
-    posterPath = models.CharField(max_length=100, blank=True)
-    backdropPath = models.CharField(max_length=100, blank=True)
-    sinopse = models.CharField(max_length=500, blank=True)
-    avaliacao = models.FloatField(blank=True, null=True)
+    classificacao = models.CharField(max_length=5, blank=True)
+    posterPath = models.CharField(max_length=100)
+    backdropPath = models.CharField(max_length=100)
+    sinopse = models.CharField(max_length=500)
+    avaliacao = models.FloatField(null=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -29,7 +29,7 @@ class Filme(models.Model):
     id_filme = models.IntegerField(primary_key=True)
     titulo = models.OneToOneField(Titulo, on_delete=models.CASCADE)
     duracao = models.CharField(max_length=10)
-    diretor = models.CharField(max_length=50)
+    diretor = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return f"Filme: {self.titulo.titulo}"
@@ -39,14 +39,19 @@ class Serie(models.Model):
     id_serie = models.IntegerField(primary_key=True)
     titulo = models.OneToOneField(Titulo, on_delete=models.CASCADE)
     qtd_temporadas = models.IntegerField()
-    criador = models.CharField(max_length=50)
+    criador = models.CharField(max_length=50, blank=True)
     situacao = models.CharField(max_length=15)
 
     def __str__(self):
         return f"Série: {self.titulo.titulo}"
 
 class Genero(models.Model):
+    id = models.IntegerField(primary_key=True)
     nome_genero = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.nome_genero
+
 
 class Elenco(models.Model):
     titulo = models.ForeignKey(Titulo, on_delete=models.CASCADE)

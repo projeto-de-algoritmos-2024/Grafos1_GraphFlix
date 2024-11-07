@@ -19,14 +19,14 @@
       </div>
       {% for filme in filmes %}
         <div class="carousel-item">
-          <a href="{% url 'pagina_filme' url_slug=filme.url_slug %}">
-            <img class="d-block img-carrossel" src="{{ filme.imagem_bg.url }}" alt="{{ filme.titulo }}">
+          <a href="{% url 'pagina_filme' url_slug=filme.titulo.slug %}">
+            <img class="d-block img-carrossel" src="https://image.tmdb.org/t/p/original/{{ filme.titulo.backdropPath }}" alt="{{ filme.titulo }}">
           </a>
           <div class="carousel-caption d-none d-md-block">
-            <a href="{% url 'pagina_filme' url_slug=filme.url_slug %}">
+            <a href="{% url 'pagina_filme' url_slug=filme.titulo.slug %}">
               <h5>{{ filme.titulo }}</h5>
-              <p><i class="fa-regular fa-clock"></i> {{ filme.duracao }}. <i class="fa-regular fa-calendar"></i> {{ filme.ano_lancamento }}</p>
-              <p>{{ filme.sinopse|truncatechars:150 }}</p>
+              <p><i class="fa-regular fa-clock"></i> {{ filme.duracao }}.ㅤ<i class="fa-regular fa-calendar"></i> {{ filme.titulo.dtLancamento }}</p>
+              <p>{{ filme.titulo.sinopse|truncatechars:150 }}</p>
             </a>
           </div>
         </div>
@@ -48,11 +48,11 @@
       <span><a class="ver-mais-titulos" href="{% url 'filmes' %}"><i class="fa-solid fa-angles-right"></i>Veja mais</a></span>
     </h1>  
       {% for filme in filmes|slice:":6" %}
-      <a href="{% url 'pagina_filme' url_slug=filme.url_slug %}">
+      <a href="{% url 'pagina_filme' url_slug=filme.titulo.slug %}">
         <div class="container-titulos">
-          <img class="image" src="{{ filme.imagem_capa.url }}" alt="{{ filme.titulo }} - Capa">
+          <img class="image" src="https://image.tmdb.org/t/p/original/{{ filme.titulo.posterPath }}" alt="{{ filme.titulo }} - Capa">
           <div class="overlay">
-            <p>{{ filme.titulo }}</p>
+            <p>{{ filme.titulo.titulo }}</p>
           </div>
         </div>  
       </a>
@@ -65,9 +65,9 @@
       <span><a class="ver-mais-titulos" href="{% url 'series' %}"><i class="fa-solid fa-angles-right"></i>Veja mais</a></span>
     </h1> 
       {% for serie in series|slice:":6" %}
-        <a href="{% url 'pagina_serie' url_slug=serie.url_slug %}">
+        <a href="{% url 'pagina_serie' url_slug=serie.titulo.slug %}">
         <div class="container-titulos">
-          <img class="image" src="{{ serie.imagem_capa.url }}" alt="{{ serie.titulo }} - Capa">
+          <img class="image" src="https://image.tmdb.org/t/p/original/{{ serie.titulo.posterPath }}" alt="{{ serie.titulo }} - Capa">
           <div class="overlay">
             <p>{{ serie.titulo }}</p>
           </div>

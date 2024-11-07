@@ -14,9 +14,9 @@
     <div class="painel-titulos">
         <h1 class="titulos-titulo">Filmes </h1>  
         {% for filme in filmes %}
-        <a href="{% url 'pagina_filme' url_slug=filme.url_slug %}">
+        <a href="{% url 'pagina_filme' url_slug=filme.titulo.slug %}">
             <div class="container-titulos">
-            <img class="image" src="{{ filme.imagem_capa.url }}" alt="{{ filme.titulo }} - Capa">
+            <img class="image" src="https://image.tmdb.org/t/p/original/{{ filme.titulo.posterPath }}" alt="{{ filme.titulo }} - Capa">
             <div class="overlay">
                 <p>{{ filme.titulo }}</p>
             </div>

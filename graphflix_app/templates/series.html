@@ -6,17 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta charset="UTF-8"/>
-    <title>Score Watch :: Séries</title>
+    <title>Score Watch :: Series</title>
 </head>
 <body>
   {% include 'menu.html' %}
 
     <div class="painel-titulos">
-        <h1 class="titulos-titulo">Séries </h1>  
+        <h1 class="titulos-titulo">Series </h1>  
         {% for serie in series %}
-        <a href="{% url 'pagina_serie' url_slug=serie.url_slug %}">
+        <a href="{% url 'pagina_serie' url_slug=serie.titulo.slug %}">
             <div class="container-titulos">
-            <img class="image" src="{{ serie.imagem_capa.url }}" alt="{{ serie.titulo }} - Capa">
+            <img class="image" src="https://image.tmdb.org/t/p/original/{{ serie.titulo.posterPath }}" alt="{{ serie.titulo }} - Capa">
             <div class="overlay">
                 <p>{{ serie.titulo }}</p>
             </div>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from .models import Filme, Serie
+from .models import Filme, Serie, Titulo, Genero
 from django.utils.text import slugify
 from django.db.models import Avg
 from django.contrib import messages
@@ -88,16 +88,26 @@ def series(request):
 def pagina_filme(request, url_slug):
     titulo = get_object_or_404(Titulo, slug=url_slug)
     filme = get_object_or_404(Filme, titulo=titulo)
+    generos = Genero.objects.filter(possui__titulo=titulo)
+    avaliacao_xdez = filme.titulo.avaliacao * 10
+
     context = {
         'filme': filme,
+        'generos': generos,
+        'avaliacao_xdez': avaliacao_xdez,
     }
     return render(request, 'pagina-filme.html', context)
 
 def pagina_serie(request, url_slug):
     titulo = get_object_or_404(Titulo, slug=url_slug)
     serie = get_object_or_404(Serie, titulo=titulo)
+    generos = Genero.objects.filter(possui__titulo=titulo)
+    avaliacao_xdez = serie.titulo.avaliacao * 10
+
     context = {
         'serie': serie,
+        'generos': generos,
+        'avaliacao_xdez': avaliacao_xdez,
     }
     return render(request, 'pagina-serie.html', context)
 
