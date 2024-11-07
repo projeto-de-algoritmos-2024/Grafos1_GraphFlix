@@ -33,9 +33,7 @@ urlpatterns = [
     path('serie/<slug:url_slug>/', views.pagina_serie, name='pagina_serie'),
     path('filmes', views.filmes, name='filmes'),
     path('series', views.series, name='series'),
-    path('<str:tipo>/<str:url_slug>/editar_comentario/<int:comentario_id>/', views.editar_comentario, name='editar_comentario'),
-    path('<str:tipo>/<str:url_slug>/excluir_comentario/<int:comentario_id>/', views.excluir_comentario, name='excluir_comentario'),
-
+   
 
 ]
 

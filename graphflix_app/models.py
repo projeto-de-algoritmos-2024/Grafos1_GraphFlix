@@ -1,64 +1,67 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils.text import slugify
+
+class Usuario(AbstractUser):
+    notaMinima = models.FloatField(null=True, blank=True)
+
+class Titulo(models.Model):
+    titulo = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True, blank=True)
+    dtLancamento = models.DateField()
+    classificacao = models.CharField(max_length=5)
+    posterPath = models.CharField(max_length=100, blank=True)
+    backdropPath = models.CharField(max_length=100, blank=True)
+    sinopse = models.CharField(max_length=500, blank=True)
+    avaliacao = models.FloatField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.titulo)
+        super(Titulo, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.titulo
 
 
 class Filme(models.Model):
-    titulo = models.CharField(max_length=100)
-    sinopse = models.TextField()
-    genero = models.CharField(max_length=50)
-    duracao = models.CharField(max_length=50)
-    ano_lancamento = models.PositiveIntegerField()
-    diretor = models.CharField(max_length=100)
-    imagem_capa = models.ImageField(upload_to='filmes/', null=True, blank=True)
-    imagem_bg = models.ImageField(upload_to='filmes/', null=True, blank=True)
-    url_slug = models.SlugField(unique=True)
-
-    def save(self, *args, **kwargs):
-        self.url_slug = slugify(self.titulo)
-        super().save(*args, **kwargs)
+    titulo = models.OneToOneField(Titulo, on_delete=models.CASCADE, primary_key=True)
+    duracao = models.CharField(max_length=10)
+    diretor = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.titulo
+        return f"Filme: {self.titulo.titulo}"
+
 
 class Serie(models.Model):
-    titulo = models.CharField(max_length=100)
-    sinopse = models.TextField()
-    genero = models.CharField(max_length=50)
-    qtd_temporadas = models.CharField(max_length=50)
-    ano_estreia = models.PositiveIntegerField()
-    criador = models.CharField(max_length=100)
-    imagem_capa = models.ImageField(upload_to='series/', null=True, blank=True)
-    imagem_bg = models.ImageField(upload_to='series/', null=True, blank=True)
-    url_slug = models.SlugField(unique=True)
-
-    def save(self, *args, **kwargs):
-        self.url_slug = slugify(self.titulo)
-        super().save(*args, **kwargs)
+    titulo = models.OneToOneField(Titulo, on_delete=models.CASCADE, primary_key=True)
+    qtd_temporadas = models.IntegerField()
+    criador = models.CharField(max_length=50)
+    situacao = models.CharField(max_length=15)
 
     def __str__(self):
-        return self.titulo
+        return f"Série: {self.titulo.titulo}"
 
-class Avaliacao(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    filme = models.ForeignKey(Filme, on_delete=models.CASCADE, null=True)
-    serie = models.ForeignKey(Serie, on_delete=models.CASCADE, null=True)
-    classificacao = models.DecimalField(max_digits=3, decimal_places=1)
-    comentario = models.TextField()
-    data_avaliacao = models.DateTimeField(auto_now_add=True)
+class Genero(models.Model):
+    nome_genero = models.CharField(max_length=20)
 
-    def __str__(self):
-        return f"Avaliação de {self.usuario.username} para {self.filme or self.serie}"
+class Elenco(models.Model):
+    titulo = models.ForeignKey(Titulo, on_delete=models.CASCADE)
+    elenco = models.CharField(max_length=50)
 
+class Possui(models.Model):
+    titulo = models.ForeignKey(Titulo, on_delete=models.RESTRICT)
+    genero = models.ForeignKey(Genero, on_delete=models.RESTRICT)
 
-class Comentario(models.Model):
-    avaliacao = models.ForeignKey(Avaliacao, on_delete=models.CASCADE, related_name='comentarios')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    texto = models.TextField()
-    data_comentario = models.DateTimeField(auto_now_add=True)
+class Prefere(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT)
+    genero = models.ForeignKey(Genero, on_delete=models.RESTRICT)
 
-    def __str__(self):
-        return f"Comentário de {self.usuario.username} em {self.avaliacao.filme or self.avaliacao.serie}"
+class Favorita(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    titulo = models.ForeignKey(Titulo, on_delete=models.SET_NULL, null=True)
+
 
 
 """ python manage.py makemigrations

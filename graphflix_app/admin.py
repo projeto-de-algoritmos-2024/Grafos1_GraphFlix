@@ -1,7 +1,12 @@
 from django.contrib import admin
-from .models import Filme, Serie, Avaliacao, Comentario
+from .models import Usuario, Titulo, Filme, Serie, Genero, Elenco, Possui, Prefere, Favorita
 
+admin.site.register(Titulo)
 admin.site.register(Filme)
 admin.site.register(Serie)
-admin.site.register(Avaliacao)
-admin.site.register(Comentario)
+admin.site.register(Genero)
+admin.site.register(Elenco)
+admin.site.register(Possui)
+admin.site.register(Prefere)
+admin.site.register(Favorita)
+admin.site.register(Usuario)
