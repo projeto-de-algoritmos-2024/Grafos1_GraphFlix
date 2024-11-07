@@ -34,6 +34,7 @@ urlpatterns = [
     path('filmes', views.filmes, name='filmes'),
     path('series', views.series, name='series'),
     path('recomendacoes', views.recomendacoes, name='recomendacoes'),
+    path('favoritar/<int:titulo_id>/', views.toggle_favorito, name='toggle_favorito'),
    
 
 ]

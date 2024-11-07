@@ -26,22 +26,32 @@
                             {{ genero.nome_genero }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </p>
-                    <p><i class="fa-regular fa-clock"></i> Duração: {{ filme.duracao }}</p>
+                    <p><i class="fa-regular fa-clock"></i> Duração: {{ filme.duracao }}m</p>
                     <p><i class="fa-regular fa-calendar"></i> Data de Lançamento: {{ filme.titulo.dtLancamento }}</p>
                     <p><i class="fa-solid fa-video"></i> Diretor: {{ filme.diretor }}</p>
+                    <p><i class="fa-solid fa-users"></i> Elenco: {{ elenco }}</p> 
+
+                    <!-- Botão de favoritos -->
+                    <form action="{% url 'toggle_favorito' filme.titulo.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-favorito">
+                            {% if is_favorito %}
+                                Remover dos Favoritos
+                            {% else %}
+                                Adicionar aos Favoritos
+                            {% endif %}
+                        </button>
+                    </form>
+
                     <div class="barra-progresso">
                         <p>Nota média: {{ avaliacao_xdez|floatformat:'0:2' }}%</p>
-                        <div class="progresso" style="width: {{ avaliacao_xdez|floatformat:'0:2' }}%;">
-                        </div>
+                        <div class="progresso" style="width: {{ avaliacao_xdez|floatformat:'0:2' }}%;"></div>
                     </div>
-
-
                 </div>
             </div>
         </div>
     </div>  
 
     {% include 'footer.html' %}
-
 </body>
 </html>

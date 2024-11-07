@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from .models import Filme, Serie, Titulo, Genero, Prefere
+from .models import Filme, Serie, Titulo, Genero, Prefere,Favorita,Elenco
 from django.utils.text import slugify
 from django.db.models import Avg
 from django.contrib import messages
@@ -46,10 +46,12 @@ def realizar_login(request):
 
 @login_required
 def perfil(request):
+    favoritos = Favorita.objects.filter(usuario=request.user)
     context = {
         'username': request.user.username,
         'email': request.user.email,
-        'nome_completo': request.user.get_full_name()
+        'nome_completo': request.user.get_full_name(),
+        'favoritos': favoritos,
     }
     return render(request, 'perfil.html', context)
 
@@ -90,12 +92,21 @@ def pagina_filme(request, url_slug):
     filme = get_object_or_404(Filme, titulo=titulo)
     generos = Genero.objects.filter(possui__titulo=titulo)
     avaliacao_xdez = filme.titulo.avaliacao * 10
+    
+    elenco = Elenco.objects.filter(titulo=titulo)
+    elenco_str = ', '.join([e.elenco for e in elenco])
+
+    # Verifique se o filme está nos favoritos do usuário
+    is_favorito = filme.titulo.favorita_set.filter(usuario=request.user).exists()
 
     context = {
         'filme': filme,
         'generos': generos,
         'avaliacao_xdez': avaliacao_xdez,
+        'elenco': elenco_str,
+        'is_favorito': is_favorito,  # Variável indicando se o filme é favorito
     }
+
     return render(request, 'pagina-filme.html', context)
 
 def pagina_serie(request, url_slug):
@@ -104,10 +115,14 @@ def pagina_serie(request, url_slug):
     generos = Genero.objects.filter(possui__titulo=titulo)
     avaliacao_xdez = serie.titulo.avaliacao * 10
 
+
+    elenco = Elenco.objects.filter(titulo=titulo)
+
     context = {
         'serie': serie,
         'generos': generos,
         'avaliacao_xdez': avaliacao_xdez,
+        'elenco': elenco, 
     }
     return render(request, 'pagina-serie.html', context)
 
@@ -146,3 +161,18 @@ def recomendacoes(request):
         'series': series
     }
     return render(request, 'recomendacoes.html', context, )
+
+@login_required
+def toggle_favorito(request, titulo_id):
+    titulo = get_object_or_404(Titulo, id=titulo_id)
+    favorito, created = Favorita.objects.get_or_create(usuario=request.user, titulo=titulo)
+
+    if not created:
+        
+        favorito.delete()
+        messages.success(request, f"'{titulo.titulo}' foi removido dos seus favoritos.")
+    else:
+   
+        messages.success(request, f"'{titulo.titulo}' foi adicionado aos seus favoritos.")
+
+    return redirect('pagina_filme', url_slug=titulo.slug)

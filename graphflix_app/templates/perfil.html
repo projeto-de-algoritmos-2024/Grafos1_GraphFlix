@@ -21,6 +21,28 @@
             </div>
         </div>
     </div>
+
+    <!-- Seção de favoritos -->
+    <div style="display: block; margin-top: 30px;">
+        <h1 class="topico">Seus Favoritos</h1>
+        <div>
+            {% if favoritos %}
+                <ul class="favoritos-list">
+                    {% for favorito in favoritos %}
+                        <li class="favorito-item">
+                            <div class="favorito-info">
+                                <strong>{{ favorito.titulo.titulo }}</strong>
+                                <a href="{% url 'pagina_filme' favorito.titulo.slug %}">Ver detalhes</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p style="text-align:center">Nenhum filme ou série favorito ainda.</p><br><br><br>
+            {% endif %}
+        </div>
+    </div>
+
     <div style="display: block; margin-top: 30px;"><h1 class="topico">Seus comentários</h1></div>
     <div>
         {% if comentarios_recentes %}
@@ -41,9 +63,6 @@
             <p style="text-align:center">Nenhum comentário encontrado.</p><br><br><br>
         {% endif %}
     </div>
-
-    
-
 
     {% include 'footer.html' %}
 </body>

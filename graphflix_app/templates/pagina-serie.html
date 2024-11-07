@@ -28,24 +28,23 @@
                     </p>
                     <p><i class="fa-regular fa-clock"></i> Qtd. temporadas: {{ serie.qtd_temporadas }}</p>
                     <p><i class="fa-regular fa-calendar"></i> Data de Lançamento: {{ serie.titulo.dtLancamento }}</p>
-                        {% if serie.criador %}
-                        <p><i class="fa-solid fa-video"></i> 
-                            Criador: {{ serie.criador }}
-                        </p>
-                        {% endif %}
+                    {% if serie.criador %}
+                        <p><i class="fa-solid fa-video"></i> Criador: {{ serie.criador }}</p>
+                    {% endif %}
+                    <p><i class="fa-solid fa-users"></i> Elenco:
+                        {% for ator in elenco %}
+                            {{ ator.elenco }} {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
                     <div class="barra-progresso">
                         <p>Nota média: {{ avaliacao_xdez|floatformat:'0:2' }}%</p>
-                        <div class="progresso" style="width: {{ avaliacao_xdez|floatformat:'0:2' }}%;">
-                        </div>
+                        <div class="progresso" style="width: {{ avaliacao_xdez|floatformat:'0:2' }}%;"></div>
                     </div>
-
-
                 </div>
             </div>
         </div>
     </div>  
 
     {% include 'footer.html' %}
-
 </body>
 </html>
