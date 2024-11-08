@@ -12,7 +12,7 @@ TMDB_CREDITS_URL = f'https://api.themoviedb.org/3/{{media_type}}/{{media_id}}/cr
 RATE_LIMIT = 0.02  # Limite de 50 requisições por segundo (1/50 = 0.02s)
 
 def importar_filmes():
-    page = 3
+    page = 1
     while True:
         response = requests.get(f"{TMDB_MOVIES_URL}&page={page}")
         if response.status_code != 200:
@@ -26,11 +26,7 @@ def importar_filmes():
 
         for filme_data in filmes:
             detalhes_response = requests.get(TMDB_MOVIE_DETAILS_URL.format(movie_id=filme_data['id']))
-            if detalhes_response.status_code == 200:
-                detalhes_filme = detalhes_response.json()
-                duracao = detalhes_filme.get('runtime', 'N/A')
-            else:
-                duracao = 'N/A'
+            duracao = detalhes_response.json().get('runtime', 'N/A') if detalhes_response.status_code == 200 else 'N/A'
             
             credits_response = requests.get(TMDB_CREDITS_URL.format(media_type='movie', media_id=filme_data['id']))
             if credits_response.status_code == 200:
@@ -42,21 +38,26 @@ def importar_filmes():
                 diretor = 'N/A'
                 elenco = []
 
-            titulo, _ = Titulo.objects.update_or_create(
-                slug=slugify(filme_data['title']),
-                defaults={
-                    'titulo': filme_data['title'],
-                    'dtLancamento': filme_data.get('release_date'),
-                    'classificacao': filme_data.get('vote_average'),
-                    'posterPath': filme_data.get('poster_path', ''),
-                    'backdropPath': filme_data.get('backdrop_path', ''),
-                    'sinopse': filme_data.get('overview', ''),
-                    'avaliacao': filme_data.get('vote_average'),
-                }
-            )
+            try:
+                slug = slugify(f"{filme_data['name']}-{filme_data['id']}")
+                titulo, _ = Titulo.objects.update_or_create(
+                    slug=slug,
+                    defaults={
+                        'titulo': filme_data['title'],
+                        'dtLancamento': filme_data.get('release_date'),
+                        'classificacao': filme_data.get('vote_average'),
+                        'posterPath': filme_data.get('poster_path', ''),
+                        'backdropPath': filme_data.get('backdrop_path', ''),
+                        'sinopse': filme_data.get('overview', ''),
+                        'avaliacao': filme_data.get('vote_average'),
+                    }
+                )
+            except Exception as e:
+                print(f"Erro ao criar título {filme_data['title']}: {e}")
+                continue  # Pula se der erro
 
             print(f"Importando filme: {filme_data['title']}")
-            
+
             filme, _ = Filme.objects.update_or_create(
                 id_filme=filme_data['id'],
                 defaults={'titulo': titulo, 'duracao': duracao, 'diretor': diretor}
@@ -76,7 +77,6 @@ def importar_filmes():
         print(f"Página {page} de filmes importada com sucesso.")
         page += 1
 
-
 def importar_series():
     page = 1
     while True:
@@ -92,11 +92,7 @@ def importar_series():
 
         for serie_data in series:
             detalhes_response = requests.get(TMDB_SERIE_DETAILS_URL.format(tv_id=serie_data['id']))
-            if detalhes_response.status_code == 200:
-                detalhes_serie = detalhes_response.json()
-                qtd_temporadas = detalhes_serie.get('number_of_seasons', 0)
-            else:
-                qtd_temporadas = 0
+            qtd_temporadas = detalhes_response.json().get('number_of_seasons', 0) if detalhes_response.status_code == 200 else 0
             
             credits_response = requests.get(TMDB_CREDITS_URL.format(media_type='tv', media_id=serie_data['id']))
             if credits_response.status_code == 200:
@@ -108,18 +104,23 @@ def importar_series():
                 criador = 'N/A'
                 elenco = []
 
-            titulo, _ = Titulo.objects.update_or_create(
-                slug=slugify(serie_data['name']),
-                defaults={
-                    'titulo': serie_data['name'],
-                    'dtLancamento': serie_data.get('first_air_date'),
-                    'classificacao': serie_data.get('vote_average'),
-                    'posterPath': serie_data.get('poster_path', ''),
-                    'backdropPath': serie_data.get('backdrop_path', ''),
-                    'sinopse': serie_data.get('overview', ''),
-                    'avaliacao': serie_data.get('vote_average'),
-                }
-            )
+            try:
+                slug = slugify(f"{serie_data['name']}-{serie_data['id']}")
+                titulo, _ = Titulo.objects.update_or_create(
+                    slug=slug,
+                    defaults={
+                        'titulo': serie_data['name'],
+                        'dtLancamento': serie_data.get('first_air_date'),
+                        'classificacao': serie_data.get('vote_average'),
+                        'posterPath': serie_data.get('poster_path', ''),
+                        'backdropPath': serie_data.get('backdrop_path', ''),
+                        'sinopse': serie_data.get('overview', ''),
+                        'avaliacao': serie_data.get('vote_average'),
+                    }
+                )
+            except Exception as e:
+                print(f"Erro ao criar título {serie_data['name']}: {e}")
+                continue
 
             print(f"Importando série: {serie_data['name']}")
 
