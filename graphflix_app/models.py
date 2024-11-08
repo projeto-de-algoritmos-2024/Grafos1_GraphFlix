@@ -7,6 +7,15 @@ class Usuario(AbstractUser):
     notaMinima = models.FloatField(null=True, blank=True)
 
 class Titulo(models.Model):
+    TIPO_CHOICES = [
+        ('filme', 'Filme'),
+        ('serie', 'Série'),
+    ]
+    tipo = models.CharField(
+        max_length=5,
+        choices=TIPO_CHOICES,
+        default='filme'
+    )
     titulo = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     dtLancamento = models.DateField()
@@ -71,5 +80,5 @@ class Favorita(models.Model):
 
 
 
-""" python manage.py makemigrations
-python manage.py migrate """
+""" python3 manage.py makemigrations
+python3 manage.py migrate """

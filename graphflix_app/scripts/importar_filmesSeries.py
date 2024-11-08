@@ -39,10 +39,11 @@ def importar_filmes():
                 elenco = []
 
             try:
-                slug = slugify(f"{filme_data['name']}-{filme_data['id']}")
+                slug = slugify(f"{filme_data['title']}-{filme_data['id']}")
                 titulo, _ = Titulo.objects.update_or_create(
                     slug=slug,
                     defaults={
+                        'tipo': 'filme',
                         'titulo': filme_data['title'],
                         'dtLancamento': filme_data.get('release_date'),
                         'classificacao': filme_data.get('vote_average'),
@@ -112,6 +113,7 @@ def importar_series():
                 titulo, _ = Titulo.objects.update_or_create(
                     slug=slug,
                     defaults={
+                        'tipo': 'serie',
                         'titulo': serie_data['name'],
                         'dtLancamento': serie_data.get('first_air_date'),
                         'classificacao': serie_data.get('vote_average'),
