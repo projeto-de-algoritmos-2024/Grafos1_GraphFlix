@@ -91,7 +91,7 @@ def pagina_filme(request, url_slug):
     titulo = get_object_or_404(Titulo, slug=url_slug)
     filme = get_object_or_404(Filme, titulo=titulo)
     generos = Genero.objects.filter(possui__titulo=titulo)
-    avaliacao_xdez = filme.titulo.avaliacao * 10
+    avaliacao_xdez = round(filme.titulo.avaliacao * 10, 2)
     
     elenco = Elenco.objects.filter(titulo=titulo)
     elenco_str = ', '.join([e.elenco for e in elenco])
@@ -113,7 +113,7 @@ def pagina_serie(request, url_slug):
     titulo = get_object_or_404(Titulo, slug=url_slug)
     serie = get_object_or_404(Serie, titulo=titulo)
     generos = Genero.objects.filter(possui__titulo=titulo)
-    avaliacao_xdez = serie.titulo.avaliacao * 10
+    avaliacao_xdez = round(serie.titulo.avaliacao * 10, 2)
 
 
     elenco = Elenco.objects.filter(titulo=titulo)

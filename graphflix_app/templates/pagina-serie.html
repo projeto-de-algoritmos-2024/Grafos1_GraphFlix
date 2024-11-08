@@ -31,16 +31,18 @@
                     {% if serie.criador %}
                         <p><i class="fa-solid fa-video"></i> Criador: {{ serie.criador }}</p>
                     {% endif %}
-                    <p><i class="fa-solid fa-users"></i> Elenco:
-                        {% for ator in elenco %}
-                            {{ ator.elenco }} {% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </p>
                     <div class="barra-progresso">
                         <p>Nota média: {{ avaliacao_xdez|floatformat:'0:2' }}%</p>
                         <div class="progresso" style="width: {{ avaliacao_xdez|floatformat:'0:2' }}%;"></div>
                     </div>
                 </div>
+            </div>
+            <div class="elenco">
+                <p style="display: block;"><i class="fa-solid fa-users"></i> Elenco:
+                    {% for ator in elenco %}
+                        {{ ator.elenco }} {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
             </div>
         </div>
     </div>  

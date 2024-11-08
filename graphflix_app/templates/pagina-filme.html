@@ -29,7 +29,6 @@
                     <p><i class="fa-regular fa-clock"></i> Duração: {{ filme.duracao }}m</p>
                     <p><i class="fa-regular fa-calendar"></i> Data de Lançamento: {{ filme.titulo.dtLancamento }}</p>
                     <p><i class="fa-solid fa-video"></i> Diretor: {{ filme.diretor }}</p>
-                    <p><i class="fa-solid fa-users"></i> Elenco: {{ elenco }}</p> 
 
                     <!-- Botão de favoritos -->
                     <form action="{% url 'toggle_favorito' filme.titulo.id %}" method="post" style="text-align: left;">
@@ -48,6 +47,11 @@
                         <div class="progresso" style="width: {{ avaliacao_xdez|floatformat:'0:2' }}%;"></div>
                     </div>
                 </div>
+            </div>
+            <div class="elenco">
+                <p style="display: block;">
+                    <p><i class="fa-solid fa-users"></i> Elenco: {{ elenco }}</p> 
+                </p>
             </div>
         </div>
     </div>  
