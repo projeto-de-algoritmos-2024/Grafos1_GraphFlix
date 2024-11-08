@@ -13,7 +13,7 @@ def criar_grafo():
         "titulos": {},
         "relacionamentos": {
             "titulo-genero": {},
-            "titulo-titulo": {}
+            "titulo-titulo": set()
         }
     }
 
@@ -34,10 +34,8 @@ def criar_grafo():
         for compartilha in Possui.objects.filter(genero__in=generos_do_titulo):
             outro_titulo_id = compartilha.titulo.id
             if outro_titulo_id != titulo.id:
-                if titulo.id not in grafo["relacionamentos"]["titulo-titulo"]:
-                    grafo["relacionamentos"]["titulo-titulo"][titulo.id] = []
-                if outro_titulo_id not in grafo["relacionamentos"]["titulo-titulo"][titulo.id]:
-                    grafo["relacionamentos"]["titulo-titulo"][titulo.id].append(outro_titulo_id)
+                relacao = tuple(sorted((titulo.id, outro_titulo_id)))
+                grafo["relacionamentos"]["titulo-titulo"].add(relacao)
 
     # salvando no Neo4j
     def cria_genero(tx, id_genero, nome_genero):
@@ -54,11 +52,11 @@ def criar_grafo():
         MERGE (g)-[:POSSUI]->(t)
         """, genero_id=genero_id, titulo_id=titulo_id)
 
-
     def cria_relacao_titulo_titulo(tx, titulo_id1, titulo_id2):
         tx.run("""
             MATCH (t1:Titulo {id: $titulo_id1}), (t2:Titulo {id: $titulo_id2})
             MERGE (t1)-[:COMPARTILHA_GENERO]->(t2)
+            MERGE (t2)-[:COMPARTILHA_GENERO]->(t1)
             """, titulo_id1=titulo_id1, titulo_id2=titulo_id2)
 
     # criando nós
@@ -76,11 +74,9 @@ def criar_grafo():
             for genero_id in generos:
                 session.write_transaction(cria_relacao_genero_titulo, genero_id, titulo_id)
 
-        
-        # relação título-título
-        for titulo_id, titulos_relacionados in grafo["relacionamentos"]["titulo-titulo"].items():
-            for outro_titulo_id in titulos_relacionados:
-                session.write_transaction(cria_relacao_titulo_titulo, titulo_id, outro_titulo_id)
+        # relação título-título (bidimensional)
+        for titulo_id1, titulo_id2 in grafo["relacionamentos"]["titulo-titulo"]:
+            session.write_transaction(cria_relacao_titulo_titulo, titulo_id1, titulo_id2)
 
     print("Sucesso!")
     driver.close()
