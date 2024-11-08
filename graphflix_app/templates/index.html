@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta charset="UTF-8"/>
-    <title>Score Watch</title>
+    <title>GraphFlix</title>
 </head>
 <body>
   {% include 'menu.html' %}
@@ -19,7 +19,7 @@
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img class="d-block w-100" src="{% static 'imgs/sw-bg.png' %}" alt="First slide">
+        <img class="d-block w-100" src="{% static 'imgs/banner-principal.png' %}" alt="First slide">
       </div>
       {% for filme in filmes %}
         <div class="carousel-item">
@@ -99,7 +99,7 @@
       </a>
       {% endfor %}   
   </div>   
-  <br>
+  <br><br>
     {% include 'footer.html' %}
 </body>
 </html>

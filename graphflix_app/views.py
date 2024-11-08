@@ -121,6 +121,7 @@ def pagina_serie(request, url_slug):
 
 
     elenco = Elenco.objects.filter(titulo=titulo)
+    serie.criador = serie.criador.split(", ")
 
     context = {
         'serie': serie,

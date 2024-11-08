@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta charset="UTF-8"/>
-    <title>Score Watch - {{ serie.titulo }}</title>
+    <title>GraphFlix - {{ serie.titulo }}</title>
 </head>
 <body>
     {% include 'menu.html' %}
@@ -28,9 +28,16 @@
                     </p>
                     <p><i class="fa-regular fa-clock"></i> Qtd. temporadas: {{ serie.qtd_temporadas }}</p>
                     <p><i class="fa-regular fa-calendar"></i> Data de Lançamento: {{ serie.titulo.dtLancamento }}</p>
-                    {% if serie.criador %}
-                        <p><i class="fa-solid fa-video"></i> Criador: {{ serie.criador }}</p>
-                    {% endif %}
+                    {% if serie.criador != "" %}
+                    <p><i class="fa-solid fa-video"></i> Criador: 
+                        {% for nome in serie.criador %}
+                            {{ nome }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                
+                
+                
                     <div class="barra-progresso">
                         <p>Nota média: {{ avaliacao_xdez|floatformat:'0:2' }}%</p>
                         <div class="progresso" style="width: {{ avaliacao_xdez|floatformat:'0:2' }}%;"></div>

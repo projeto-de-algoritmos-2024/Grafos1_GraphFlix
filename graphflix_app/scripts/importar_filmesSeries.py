@@ -75,6 +75,8 @@ def importar_filmes():
             time.sleep(RATE_LIMIT)
 
         print(f"Página {page} de filmes importada com sucesso.")
+        if page == 30:
+            break
         page += 1
 
 def importar_series():
@@ -99,7 +101,8 @@ def importar_series():
                 credits_data = credits_response.json()
                 crew = credits_data.get('crew', [])
                 elenco = credits_data.get('cast', [])
-                criador = next((pessoa['name'] for pessoa in crew if pessoa['job'] == 'Creator'), 'N/A')
+                criador_lista = [pessoa['name'] for pessoa in crew if pessoa['job'] in ['Executive Producer', 'Writer']]
+                criador = ', '.join(criador_lista) if criador_lista else 'N/A'
             else:
                 criador = 'N/A'
                 elenco = []
@@ -141,4 +144,6 @@ def importar_series():
             time.sleep(RATE_LIMIT)
 
         print(f"Página {page} de séries importada com sucesso.")
+        if page == 30:
+            break
         page += 1
