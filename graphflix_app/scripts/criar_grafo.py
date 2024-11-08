@@ -74,7 +74,7 @@ def criar_grafo():
             for genero_id in generos:
                 session.write_transaction(cria_relacao_genero_titulo, genero_id, titulo_id)
 
-        # relação título-título (bidimensional)
+        # relação título-título
         for titulo_id1, titulo_id2 in grafo["relacionamentos"]["titulo-titulo"]:
             session.write_transaction(cria_relacao_titulo_titulo, titulo_id1, titulo_id2)
 
