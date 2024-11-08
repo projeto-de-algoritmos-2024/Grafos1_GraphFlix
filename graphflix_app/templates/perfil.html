@@ -11,57 +11,41 @@
     {% include 'menu.html' %}
     
     <div class="painel-container" style="margin-top:5%">
-        <div class="painel" style="text-align: left; height:200px">
+        <div class="painel" style="text-align: left;">
             <div class="painel-header">Informações do usuário</div>
             <div class="painel-body">
                 <p class="perfil-p"><strong>Nome de Usuário:</strong> {{ username }}</p>
                 <p class="perfil-p"><strong>Email:</strong> {{ email }}</p>
                 <p class="perfil-p"><strong>Nome Completo:</strong> {{ nome_completo }}</p>
-                <a href="{% url 'editar-perfil' %}"><p class="perfil-p">Editar perfil</p></a>
+                <div style="text-align: right; padding: 10px;"><button class="btn"><a style="color: #fff;" href="{% url 'editar-perfil' %}">Editar perfil</a></button></div>
             </div>
         </div>
     </div>
 
     <!-- Seção de favoritos -->
     <div style="display: block; margin-top: 30px;">
-        <h1 class="topico">Seus Favoritos</h1>
+        <h1 class="topico"><i class="far fa-heart"></i> Seus Favoritos</h1>
         <div>
             {% if favoritos %}
-                <ul class="favoritos-list">
+                <div class="favoritos-list">
                     {% for favorito in favoritos %}
-                        <li class="favorito-item">
-                            <div class="favorito-info">
-                                <strong>{{ favorito.titulo.titulo }}</strong>
-                                <a href="{% url 'pagina_filme' favorito.titulo.slug %}">Ver detalhes</a>
+
+
+                    <a href="{% url 'pagina_filme' url_slug=favorito.titulo.slug %}">
+                        <div class="container-titulos">
+                            <img class="image" src="https://image.tmdb.org/t/p/original/{{ favorito.titulo.posterPath }}" alt="{{ favorito.titulo.titulo }} - Capa">
+                            <div class="overlay">
+                            <p>{{ favorito.titulo.titulo }}</p>
                             </div>
-                        </li>
+                        </div>  
+                    </a>
+
                     {% endfor %}
-                </ul>
+                </div>
             {% else %}
                 <p style="text-align:center">Nenhum filme ou série favorito ainda.</p><br><br><br>
             {% endif %}
         </div>
-    </div>
-
-    <div style="display: block; margin-top: 30px;"><h1 class="topico">Seus comentários</h1></div>
-    <div>
-        {% if comentarios_recentes %}
-            <ul class="comentarios-list">
-                {% for comentario in comentarios_recentes %}
-                    <li class="comentario-item">
-                        <div class="comentario-info">
-                            <strong>
-                                {{ comentario.usuario }}
-                            </strong>
-                            <span class="data">{{ comentario.data_comentario }}</span>
-                        </div>
-                        <p class="texto">{{ comentario.texto }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p style="text-align:center">Nenhum comentário encontrado.</p><br><br><br>
-        {% endif %}
     </div>
 
     {% include 'footer.html' %}

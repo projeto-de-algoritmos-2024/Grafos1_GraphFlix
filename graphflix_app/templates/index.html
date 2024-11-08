@@ -29,7 +29,7 @@
           <div class="carousel-caption d-none d-md-block">
             <a href="{% url 'pagina_filme' url_slug=filme.titulo.slug %}">
               <h5>{{ filme.titulo }}</h5>
-              <p><i class="fa-regular fa-clock"></i> {{ filme.duracao }}.ㅤ<i class="fa-regular fa-calendar"></i> {{ filme.titulo.dtLancamento }}</p>
+              <p><i class="fa-regular fa-clock"></i> {{ filme.duracao }}m.ㅤ<i class="fa-regular fa-calendar"></i> {{ filme.titulo.dtLancamento }}</p>
               <p>{{ filme.titulo.sinopse|truncatechars:150 }}</p>
             </a>
           </div>
@@ -49,10 +49,12 @@
 
 
   {% if user.is_authenticated %}
+  <div style="text-align: center; padding: 40px 10px 10px 0px;">  
+    <button class="btn">
+      <a href="{% url 'recomendacoes' %}" style="color: #fff;">Ver recomendações personalizadas</a>
+    </button>
+  </div>
 
-  <button class="btn">
-    <a href="{% url 'recomendacoes' %}">Ver recomendações</a>
-  </button>
   
   {% else %}
   <br>
@@ -97,7 +99,7 @@
       </a>
       {% endfor %}   
   </div>   
-
+  <br>
     {% include 'footer.html' %}
 </body>
 </html>

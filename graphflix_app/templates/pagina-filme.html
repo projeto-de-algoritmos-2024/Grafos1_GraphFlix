@@ -31,9 +31,9 @@
                     <p><i class="fa-solid fa-video"></i> Diretor: {{ filme.diretor }}</p>
 
                     <!-- Botão de favoritos -->
-                    <form action="{% url 'toggle_favorito' filme.titulo.id %}" method="post" style="text-align: left;">
+                    <form action="{% url 'toggle_favorito' filme.titulo.id %}" method="post" style="text-align: left; padding: 20px 0px;">
                         {% csrf_token %}
-                        <button type="submit" class="btn" style="width: 250px;">
+                        <button type="submit" class="btn">
                             {% if is_favorito %}
                             <i class="fa-solid fa-xmark"></i> Remover dos Favoritos
                             {% else %}

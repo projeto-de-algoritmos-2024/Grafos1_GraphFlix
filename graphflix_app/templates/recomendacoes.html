@@ -17,33 +17,13 @@
 
   <div id="recomendacoes" style="background: #000;">
     <p class="" style="text-align: center; padding: 40px 10px 10px 10px;">Configure abaixo seus gêneros favoritos e a nota mínima (TMDb) para os títulos.</p>
-
- 
-    <form method="post" style="color: #fff;">
-      {% csrf_token %}
-      <div class="form-group">
-          <label for="nota_minima" style="font-weight: bold; font-size: 18px;">Nota mínima:</label>
-          <input class="inputs" type="number" name="nota_minima" id="nota_minima" value="{{ nota_minima }}" required>
-      </div>
-  
-      <fieldset>
-          <legend class="topico" style="padding: 10px;">Seus gêneros favoritos:</legend>
-          <div class="checkbox-container" s>
-              {% for genero in generos %}
-                  <div class="checkbox-item">
-                      <input type="checkbox" name="generos" value="{{ genero.id }}" id="genero_{{ genero.id }}"
-                             {% if genero.id in generos_preferidos %}checked{% endif %}>
-                      <label for="genero_{{ genero.id }}">{{ genero.nome_genero }}</label>
-                  </div>
-              {% endfor %}
-          </div>
-      </fieldset>
-      <button  class="btn" style="width: 180px;" type="submit">Salvar Preferências</button>
-  </form>
-  
-
-
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      Configurar preferências
+    </button>
   </div>
+
+
 
   <div class="painel-titulos" style="background: radial-gradient(at 60% 80%, transparent 30%, rgba(0, 0, 0, 0.15) 90%, rgba(0, 0, 0, 0.1) 95%, rgba(0, 0, 0, 0) 100%) 100% 50% / cover, linear-gradient(rgb(0, 0, 0) 0%, transparent 90%);">
     <h1 class="titulos-titulo">
@@ -80,6 +60,50 @@
   </div>   
 
 
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Configurar preferências</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post" style="color: #fff;">
+          <div class="modal-body">
+              {% csrf_token %}
+              <div class="form-group">
+                  <label for="nota_minima" style="font-weight: bold; font-size: 18px;">Nota mínima:</label>
+                  <input class="inputs" type="number" name="nota_minima" id="nota_minima" value="{{ nota_minima }}" required step="0.1">
+              </div>
+        
+        
+        
+              <fieldset>
+                  <legend class="topico" style="padding: 10px;">Seus gêneros favoritos:</legend>
+                  <div class="checkbox-container" s>
+                      {% for genero in generos %}
+                          <div class="checkbox-item">
+                              <input type="checkbox" name="generos" value="{{ genero.id }}" id="genero_{{ genero.id }}"
+                                    {% if genero.id in generos_preferidos %}checked{% endif %}>
+                              <label for="genero_{{ genero.id }}">{{ genero.nome_genero }}</label>
+                          </div>
+                      {% endfor %}
+                  </div>
+              </fieldset>
+          
+          </div>
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" style="width: 180px;" data-dismiss="modal">Fechar</button>
+            <button  class="btn" style="width: 180px!important; bac" type="submit">Salvar Preferências</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
     {% include 'footer.html' %}
 </body>
 

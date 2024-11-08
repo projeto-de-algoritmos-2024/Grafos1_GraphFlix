@@ -29,6 +29,8 @@ def cadastro(request):
     else:
         return render(request, 'cadastro.html')
 
+from django.shortcuts import redirect
+
 def realizar_login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -36,13 +38,15 @@ def realizar_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            next_url = request.GET.get('next')
+            return redirect(next_url if next_url else 'home')
         else:
             erro = 'Usuário ou senha inválidos.'
             return render(request, 'login.html', {'erro': erro})
     else:
         erro = None
         return render(request, 'login.html', {'erro': erro})
+
 
 @login_required
 def perfil(request):

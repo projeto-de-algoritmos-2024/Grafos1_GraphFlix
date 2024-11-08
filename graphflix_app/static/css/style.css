@@ -63,7 +63,7 @@ p {
 .dropdown-item:hover {
     color: #16181b;
     text-decoration: none;
-    background-color: #0068b4!important;
+    background-color: #4f46e5!important;
     transition: .4s;
 }
 
@@ -88,7 +88,7 @@ p {
 .container-cadastro-login {
     margin: 30px auto;
     max-width: 340px;
-    background-color: #0068b4;
+    background-color: #4f46e5;
     border-radius: 15px;
     overflow: hidden;
     font-family: "Poppins"!important;
@@ -131,7 +131,7 @@ form .inputs input {
 }
 
 form button {
-    background-color: #203a77;
+    background-color: #342f99;
     color: white;
     width: 100%;
     height: 40px;
@@ -159,7 +159,7 @@ form button:hover {
 
 .form-footer a {
     font-weight: bolder;
-    color: #203a77;
+    color: #342f99;
     transition: all 3s ease-in-out;
 }
 
@@ -177,12 +177,13 @@ form button:hover {
 
 .painel {
     width: 500px;
-    background-color: rgba(0, 104, 180, 0.7);
+    background-color: rgba(0,0,0,.7);
     backdrop-filter: blur(5px);
     border-radius: 10px;
     margin: 10px;
     padding: 15px;
     color: #ffffff;
+    border: 1px solid #4f46e5;
 }
 
 .painel-header {
@@ -196,7 +197,7 @@ form button:hover {
 }
 
 .perfil-p {
-    margin: 0px;
+    margin: 0px!important;
     padding: 2px;
     font-weight: bold;
     color: #ffffff;
@@ -273,7 +274,7 @@ form button:hover {
 }
 
 .ver-mais-titulos:hover {
-    color: #0068b4;
+    color: #4f46e5;
     transition: .4s;
     margin-left: 3px;
 }
@@ -438,11 +439,10 @@ form button:hover {
 }
 
 .barra-progresso {
-    border: 1px solid #fff;
     width: 100%;
-    height: 25px;
-    background-color: #241e92;
-    border-radius: 5px;
+    height: 40px;
+    background-color: #342f99;
+    border-radius: 20px;
     overflow: hidden;
     position: relative;
 }
@@ -545,6 +545,10 @@ label {
     color: #fff;
 }
 
+a{
+    color: #4f46e5;
+}
+
 a:hover{
     text-decoration: none!important;
 }
@@ -557,4 +561,43 @@ a:hover{
 p {
     margin-top: 0;
     margin-bottom: 0.5rem!important;
+}
+
+#recomendacoes{
+    margin-top: -60px;
+    padding-top: 60px;
+    text-align: center;
+}
+
+.modal-content {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #000000!important;
+    background-clip: padding-box;
+    border-radius: 20px!important;
+    outline: 0;
+    color: #FFF!important;
+    border: 1px solid #4f46e5!important;
+}
+
+.modal-header, .modal-footer{
+    border: none!important;
+}
+
+.modal-dialog{
+    max-width: 65vw!important;
+}
+
+.close{
+    color: #fff!important;
+}
+
+.favoritos-list{
+    text-align: center;
+    padding: 10px 40px 40px 40px;
 }
