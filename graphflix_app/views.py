@@ -100,8 +100,8 @@ def pagina_filme(request, url_slug):
     elenco = Elenco.objects.filter(titulo=titulo)
     elenco_str = ', '.join([e.elenco for e in elenco])
 
-    # Verifique se o filme está nos favoritos do usuário
-    is_favorito = filme.titulo.favorita_set.filter(usuario=request.user).exists()
+    # Se o usuário está logado, verificar se o filme está nos favoritos
+    is_favorito = filme.titulo.favorita_set.filter(usuario=request.user).exists() if request.user.is_authenticated else False
 
     context = {
         'filme': filme,
@@ -119,6 +119,9 @@ def pagina_serie(request, url_slug):
     generos = Genero.objects.filter(possui__titulo=titulo)
     avaliacao_xdez = round(serie.titulo.avaliacao * 10, 2)
 
+    # Verificar se a série é favorita
+    is_favorito = serie.titulo.favorita_set.filter(usuario=request.user).exists() if request.user.is_authenticated else False
+
 
     elenco = Elenco.objects.filter(titulo=titulo)
     serie.criador = serie.criador.split(", ")
@@ -127,7 +130,8 @@ def pagina_serie(request, url_slug):
         'serie': serie,
         'generos': generos,
         'avaliacao_xdez': avaliacao_xdez,
-        'elenco': elenco, 
+        'elenco': elenco,
+        'is_favorito': is_favorito,
     }
     return render(request, 'pagina-serie.html', context)
 

@@ -35,8 +35,18 @@
                         {% endfor %}
                     </p>
                 {% endif %}
-                
-                
+
+                    <!-- Botão de favoritos -->
+                    <form action="{% url 'toggle_favorito' serie.titulo.id %}" method="post" style="text-align: left; padding: 20px 0px;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            {% if is_favorito %}
+                                <i class="fa-solid fa-xmark"></i> Remover dos Favoritos
+                            {% else %}
+                                <i class="far fa-heart"></i> Adicionar aos Favoritos
+                            {% endif %}
+                        </button>
+                    </form>
                 
                     <div class="barra-progresso">
                         <p>Nota média: {{ avaliacao_xdez|floatformat:'0:2' }}%</p>
