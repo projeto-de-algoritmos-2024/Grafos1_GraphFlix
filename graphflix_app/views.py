@@ -184,4 +184,4 @@ def toggle_favorito(request, titulo_id):
    
         messages.success(request, f"'{titulo.titulo}' foi adicionado aos seus favoritos.")
 
-    return redirect('pagina_filme', url_slug=titulo.slug)
+    return redirect('pagina_'+titulo.tipo, url_slug=titulo.slug)
