@@ -30,45 +30,40 @@
       Filmes 
       <span><a class="ver-mais-titulos" href="{% url 'filmes' %}"><i class="fa-solid fa-angles-right"></i>Veja mais</a></span>
     </h1>  
-      {% for filme in filmes_recomendados|slice:":6" %}
-      <a href="{% url 'pagina_filme' url_slug=filme.titulo.slug %}">
-        <div class="container-titulos">
-          <img class="image" src="https://image.tmdb.org/t/p/original/{{ filme.titulo.posterPath }}" alt="{{ filme.titulo }} - Capa">
-          <div class="overlay">
-            <p>{{ filme.titulo.titulo }}</p>
-          </div>
-        </div>  
-      </a>
-      {% endfor %}
-
-      <h2>Filmes Recomendados</h2>
-<ul>
-    {% for filme in filmes_recomendados %}
-        <li>
-            <strong>{{ filme.nome }}</strong> - Avaliação: {{ filme.avaliacao }}
-        </li>
+    {% for recomendado in recomendados %}
+      {% if recomendado.tipo == "filme" %}
+        <a href="{% url 'pagina_serie' url_slug=recomendado.id %}">
+            <div class="container-titulos">
+                <img class="image" src="https://image.tmdb.org/t/p/original/{{ recomendado.posterPath }}" alt="{{ recomendado.titulo }} - Capa">
+                <div class="overlay">
+                    <p>{{ recomendado.titulo }}</p>
+                </div>
+            </div>  
+        </a>
+      {% endif %}
     {% endfor %}
-</ul>
-
-  </div>
-
-  <div class="painel-titulos">
+   
+ 
     <h1 class="titulos-titulo">
       Séries
       <span><a class="ver-mais-titulos" href="{% url 'series' %}"><i class="fa-solid fa-angles-right"></i>Veja mais</a></span>
     </h1> 
-      {% for serie in series|slice:":6" %}
-        <a href="{% url 'pagina_serie' url_slug=serie.titulo.slug %}">
-        <div class="container-titulos">
-          <img class="image" src="https://image.tmdb.org/t/p/original/{{ serie.titulo.posterPath }}" alt="{{ serie.titulo }} - Capa">
-          <div class="overlay">
-            <p>{{ serie.titulo }}</p>
-          </div>
-        </div>
+  
+    {% for recomendado in recomendados %}
+    {% if recomendado.tipo == "serie" %}
+      <a href="{% url 'pagina_serie' url_slug=recomendado.id %}">
+          <div class="container-titulos">
+              <img class="image" src="https://image.tmdb.org/t/p/original/{{ recomendado.posterPath }}" alt="{{ recomendado.titulo }} - Capa">
+              <div class="overlay">
+                  <p>{{ recomendado.titulo }}</p>
+              </div>
+          </div>  
       </a>
-      {% endfor %}   
-  </div>   
+    {% endif %}
+  {% endfor %}
 
+  </div> 
+  
 
 
   <!-- Modal -->

@@ -5,7 +5,7 @@ from .models import Filme, Serie, Titulo, Genero, Prefere,Favorita,Elenco
 from django.utils.text import slugify
 from django.db.models import Avg
 from django.contrib import messages
-from graphflix_app.scripts.busca_dfs import buscar_filmes_dfs
+from graphflix_app.scripts.busca_dfs import buscar_dfs
 
 User = get_user_model()
 
@@ -159,13 +159,17 @@ def recomendacoes(request):
     generos_preferidos = Prefere.objects.filter(usuario=usuario).values_list('genero_id', flat=True)
 
     # funcao de buscaaa
-    filmes_recomendados = buscar_filmes_dfs(usuario)
+    # recomendados = buscar_dfs(usuario)
+    ids_recomendados = [recomendado['id'] for recomendado in buscar_dfs(usuario)]
+    recomendados = Titulo.objects.filter(id__in=ids_recomendados)
+
+    print("Na views: recomendados:", ids_recomendados)
 
     context = {
         'generos': generos,
         'generos_preferidos': generos_preferidos,
         'nota_minima': str(usuario.notaMinima).replace(',', '.'),
-        'filmes_recomendados': filmes_recomendados,
+        'recomendados': recomendados,
     }
     return render(request, 'recomendacoes.html', context)
 

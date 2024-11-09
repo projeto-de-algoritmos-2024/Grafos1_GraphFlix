@@ -1,76 +1,58 @@
-from django.conf import settings
+import json
 from graphflix_app.models import Prefere
-from neo4j import GraphDatabase
 
-NEO4J_URI = 'neo4j+s://c8b255a4.databases.neo4j.io'
-NEO4J_USERNAME = 'neo4j'
-NEO4J_PASSWORD = 'SlpNoo6syk3JdrF9rFocv0_rPmtO6UpmSJfAEuh2HyU'
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
-
-
-def buscar_filmes_dfs(usuario):
+def buscar_dfs(usuario):
     print("\n\n\n\n\nChegou na função buscar_filmes_dfs")
+
+    with open('graphflix_app/grafo.json', 'r') as arquivo:
+        grafo = json.load(arquivo)
 
     generos_preferidos = Prefere.objects.filter(usuario=usuario).values_list('genero_id', flat=True)
     nota_minima = usuario.notaMinima
     recomendacoes = []
 
-    print("Gêneros preferidos:", generos_preferidos)
+    print("Gêneros preferidos:", list(generos_preferidos))
 
-    with driver.session() as session:
-        # buscando títulos e gêneros relacionados
-        query = """
-        MATCH p=()-[:POSSUI]->() RETURN p LIMIT 25;
-        """
+    filmes_por_genero = {}
+    for titulo_id, genero_ids in grafo["relacionamentos"]["titulo-genero"].items():
+        for genero_id in genero_ids:
+            if str(genero_id) not in filmes_por_genero:
+                filmes_por_genero[str(genero_id)] = []
+            filmes_por_genero[str(genero_id)].append({
+                "id": titulo_id,  # Adiciona o ID do título
+                "titulo": grafo["titulos"][str(titulo_id)]["titulo"],
+                "avaliacao": grafo["titulos"][str(titulo_id)]["avaliacao"]
+            })
 
-        result = session.run(query)
-        registros = list(result)
+    # busca DFS
+    visitados = set()
 
-        print("Registros obtidos:", registros)
+    def dfs(genero_id):
+        print(f"\nChegou na função dfs. Gênero: {genero_id}")
+        if genero_id in visitados:
+            return []
+        visitados.add(genero_id)
+        
+        filmes = filmes_por_genero.get(str(genero_id), [])
+        #print(f"Filmes no gênero {genero_id}: {[filme['titulo'] for filme in filmes]}")
+        
+        # Filtrar avaliação mínima
+        filmes_filtrados = [filme for filme in filmes if filme["avaliacao"] >= nota_minima]
+        #print(f"Filmes no gênero {genero_id} após filtrar pela nota mínima {nota_minima}: {[filme['titulo'] for filme in filmes_filtrados]}")
 
-        # organiza os dados de filmes e gêneros
-        filmes_por_genero = {}
-        for record in registros:
-            for node in record["p"].nodes:
-                if "Titulo" in node.labels:
-                    titulo_id = node["id"]
-                    nome = node["titulo"]
-                    avaliacao = node["avaliacao"]
-                    print(f"Registro - Título ID: {titulo_id}, Nome: {nome}, Avaliação: {avaliacao}")
-            
-                    for rel in record["p"].relationships:
-                        if "GENERO" in rel.type:
-                            genero_id = rel.end_node["id"]
-                            if genero_id not in filmes_por_genero:
-                                filmes_por_genero[genero_id] = []
-                            filmes_por_genero[genero_id].append({
-                                "titulo": nome,
-                                "avaliacao": avaliacao
-                            })
+        for relacao in grafo["relacionamentos"]["titulo-titulo"]:
+            titulo1, titulo2 = relacao
+            if str(genero_id) == titulo1 or str(genero_id) == titulo2:
+                proximo_genero_id = titulo2 if str(genero_id) == titulo1 else titulo1
+                if proximo_genero_id not in visitados:
+                    filmes_filtrados.extend(dfs(proximo_genero_id))
 
-        # AQUI COMEÇA A BENDITA DA BUSCA
-        visitados = set()
+        return filmes_filtrados
 
-        def dfs(genero_id):
-            print("Chegou na função dfs. Gênero:", genero_id)
-            if genero_id in visitados:
-                print("ANTES DO RETURN DA FUNÇÃO DFS")
-                return []
-            visitados.add(genero_id)
-            filmes = filmes_por_genero.get(genero_id, [])
-            filmes_filtrados = [filme for filme in filmes if filme["avaliacao"] >= nota_minima]
-            
-            for filme in filmes_filtrados:
-                print("SOCORRO")
-                print(f"Filme: {filme['titulo']}, Avaliação: {filme['avaliacao']}")
+    for genero_id in generos_preferidos:
+        filmes_relacionados = dfs(genero_id)
+        recomendacoes.extend(filmes_relacionados)
 
-            return filmes_filtrados
-            
-        for genero_id in generos_preferidos:
-            filmes_relacionados = dfs(genero_id)
-            recomendacoes.extend(filmes_relacionados)
-
-    print("Recomendações obtidas:", recomendacoes)
+    print("\nRecomendações obtidas:", recomendacoes)
     return recomendacoes
-
 
