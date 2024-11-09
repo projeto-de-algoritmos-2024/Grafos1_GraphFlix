@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from django.db.models import Avg
 from django.contrib import messages
 from graphflix_app.scripts.busca_dfs import buscar_dfs
+from django.db.models import Case, When
 
 User = get_user_model()
 
@@ -161,9 +162,12 @@ def recomendacoes(request):
     # funcao de buscaaa
     # recomendados = buscar_dfs(usuario)
     ids_recomendados = [recomendado['id'] for recomendado in buscar_dfs(usuario)]
-    recomendados = Titulo.objects.filter(id__in=ids_recomendados)
+    recomendados = Titulo.objects.filter(id__in=ids_recomendados).order_by(
+    Case(*[When(id=id, then=pos) for pos, id in enumerate(ids_recomendados)])
+)
 
-    print("Na views: recomendados:", ids_recomendados)
+
+    #print("Na views: recomendados:", ids_recomendados)
 
     context = {
         'generos': generos,

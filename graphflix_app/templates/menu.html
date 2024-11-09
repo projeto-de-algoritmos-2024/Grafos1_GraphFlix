@@ -34,3 +34,32 @@
         </ul>
     </div>
 </nav><br><br>
+
+<div id="loader">
+    <div class="spinner-border text-white" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+<style>
+
+#loader {
+    position: fixed;
+    z-index: 99999;
+    background: #070614;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        var loader = document.getElementById('loader');
+        loader.style.display = 'none';
+    }, 1000);
+});
+</script>
