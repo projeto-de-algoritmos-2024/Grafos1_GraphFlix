@@ -21,6 +21,21 @@
       <div class="carousel-item active">
         <img class="d-block w-100" src="{% static 'imgs/banner-principal.png' %}" alt="First slide">
       </div>
+      {% for serie in series %}
+        <div class="carousel-item">
+          <a href="{% url 'pagina_serie' url_slug=serie.titulo.slug %}">
+            <img class="d-block img-carrossel" src="https://image.tmdb.org/t/p/original/{{ serie.titulo.backdropPath }}" alt="{{ serie.titulo }}">
+          </a>
+          <div class="carousel-caption d-none d-md-block">
+            <a href="{% url 'pagina_serie' url_slug=serie.titulo.slug %}">
+              <h5>{{ serie.titulo }}</h5>
+              <p><i class="fa-regular fa-clock"></i> Qtd. temporadas: {{ serie.qtd_temporadas }}</p>
+              <p><i class="fa-regular fa-calendar"></i> {{ serie.titulo.dtLancamento }}</p>
+              <p>{{ serie.titulo.sinopse|truncatechars:150 }}</p>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
       {% for filme in filmes %}
         <div class="carousel-item">
           <a href="{% url 'pagina_filme' url_slug=filme.titulo.slug %}">
@@ -29,7 +44,8 @@
           <div class="carousel-caption d-none d-md-block">
             <a href="{% url 'pagina_filme' url_slug=filme.titulo.slug %}">
               <h5>{{ filme.titulo }}</h5>
-              <p><i class="fa-regular fa-clock"></i> {{ filme.duracao }}m.ㅤ<i class="fa-regular fa-calendar"></i> {{ filme.titulo.dtLancamento }}</p>
+              <p><i class="fa-regular fa-clock"></i> {{ filme.duracao }}m.</p>
+              <p><i class="fa-regular fa-calendar"></i> {{ filme.titulo.dtLancamento }}</p>
               <p>{{ filme.titulo.sinopse|truncatechars:150 }}</p>
             </a>
           </div>

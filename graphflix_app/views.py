@@ -5,13 +5,15 @@ from .models import Filme, Serie, Titulo, Genero, Prefere,Favorita,Elenco
 from django.utils.text import slugify
 from django.db.models import Avg
 from django.contrib import messages
+from graphflix_app.scripts.busca_dfs import buscar_filmes_dfs
 
 User = get_user_model()
 
 def home(request):
-    filmes = Filme.objects.all()
-    series = Serie.objects.all()
+    filmes = Filme.objects.all().order_by('-id_filme')[:10]
+    series = Serie.objects.all().order_by('-id_serie')[:10]
     return render(request, 'index.html', {'filmes': filmes, 'series': series})
+
 
 def cadastro(request):
     if request.method == 'POST':
@@ -138,11 +140,7 @@ def pagina_serie(request, url_slug):
 
 @login_required
 def recomendacoes(request):
-    filmes = Filme.objects.all()
-    series = Serie.objects.all()
-    #return render(request, 'recomendacoes.html', {'filmes': filmes, 'series': series})
-
-    usuario = request.user 
+    usuario = request.user
     generos = Genero.objects.all()
 
     if request.method == 'POST':
@@ -150,7 +148,6 @@ def recomendacoes(request):
         usuario.notaMinima = float(nota_minima)
         usuario.save()
 
-        # Captura e salva os gêneros
         generos_selecionados = request.POST.getlist('generos')
         Prefere.objects.filter(usuario=usuario).delete()
         for genero_id in generos_selecionados:
@@ -159,17 +156,19 @@ def recomendacoes(request):
 
         return redirect('recomendacoes') 
 
-    # Gêneros já selecionados pelo usuário
     generos_preferidos = Prefere.objects.filter(usuario=usuario).values_list('genero_id', flat=True)
+
+    # funcao de buscaaa
+    filmes_recomendados = buscar_filmes_dfs(usuario)
 
     context = {
         'generos': generos,
         'generos_preferidos': generos_preferidos,
         'nota_minima': str(usuario.notaMinima).replace(',', '.'),
-        'filmes': filmes, 
-        'series': series
+        'filmes_recomendados': filmes_recomendados,
     }
-    return render(request, 'recomendacoes.html', context, )
+    return render(request, 'recomendacoes.html', context)
+
 
 @login_required
 def toggle_favorito(request, titulo_id):
