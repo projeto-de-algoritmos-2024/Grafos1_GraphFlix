@@ -15,22 +15,22 @@ O GraphFlix propõe um sistema de recomendação de filmes e séries que se base
 O sistema organiza as informações em um grafo, onde cada título (filme ou série) é ligado a seus gêneros associados, e cada título também possui relações com outros títulos que compartilham ao menos um gênero. 
 
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
-## Página inicial
+
+### Página inicial
 ![Página inicial](/graphflix_app/static/imgs/paginaInicial.png)
-## Página recomendações
+### Página recomendações
 ![Página recomendações](/graphflix_app/static/imgs/recomendacoes1.png)
-## Página recomendações/Filmes
+### Página recomendações/Filmes
 ![Página recomendações/Filmes](/graphflix_app/static/imgs/recomendacoesFilmes.png)
-## Página recomendações/Series
+### Página recomendações/Series
 ![Página recomendações/Series](/graphflix_app/static/imgs/recomendacoesSeries.png)
-## Página Perfil
+### Página Perfil
 ![Perfil](/graphflix_app/static/imgs/PaginaPerfil.png)
-## Página Série
+### Página Série
 ![Pagina Serie](/graphflix_app/static/imgs/PaginaSeries.png)
-## Visualização no neo4j relacionamento compatilha entre títulos e títulos (limite máximo de 1000 nós)
+### Visualização no neo4j relacionamento compatilha entre títulos e títulos (limite máximo de 1000 nós)
 ![Relacionamento Compartilha](/graphflix_app/static/imgs/RelacionamentoCompartilha.png)
-## Visualização no neo4j relacionamento possui entre títulos e gêneros (limite máximo de 1000 nós)
+### Visualização no neo4j relacionamento possui entre títulos e gêneros (limite máximo de 1000 nós)
 ![Relacionamento Possui](/graphflix_app/static/imgs/RelacionamentoPossui.png)
 
 
