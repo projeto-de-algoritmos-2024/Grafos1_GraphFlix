@@ -33,6 +33,8 @@ O sistema organiza as informações em um grafo, onde cada título (filme ou sé
 ### Visualização no neo4j relacionamento possui entre títulos e gêneros (limite máximo de 1000 nós)
 ![Relacionamento Possui](/graphflix_app/static/imgs/RelacionamentoPossui.png)
 
+## Vídeo 
+Link do vídeo de apresentação: [https://www.youtube.com/watch?v=gtpkk-_SSHE](https://www.youtube.com/watch?v=gtpkk-_SSHE)
 
 ## Instalação 
 **Linguagem**: Python <br> 
@@ -93,9 +95,6 @@ Para obter recomendações personalizadas de filmes e séries do **GraphFlix**, 
    Todos os seus favoritos ficam salvos na aba exclusiva de **Favoritos** dentro do seu perfil, onde você pode visualizá-los a qualquer momento.
 
 > Aproveite suas recomendações personalizadas e explore novos conteúdos!
-
-## Vídeo 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
 
 
 
