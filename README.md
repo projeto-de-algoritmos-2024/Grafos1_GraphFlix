@@ -28,7 +28,7 @@ O sistema organiza as informações em um grafo, onde cada título (filme ou sé
 ![Perfil](/graphflix_app/static/imgs/PaginaPerfil.png)
 ### Página Série
 ![Pagina Serie](/graphflix_app/static/imgs/PaginaSeries.png)
-### Visualização no neo4j relacionamento compatilha entre títulos e títulos (limite máximo de 1000 nós)
+### Visualização no neo4j relacionamento compartilha entre títulos e títulos (limite máximo de 1000 nós)
 ![Relacionamento Compartilha](/graphflix_app/static/imgs/RelacionamentoCompartilha.png)
 ### Visualização no neo4j relacionamento possui entre títulos e gêneros (limite máximo de 1000 nós)
 ![Relacionamento Possui](/graphflix_app/static/imgs/RelacionamentoPossui.png)
