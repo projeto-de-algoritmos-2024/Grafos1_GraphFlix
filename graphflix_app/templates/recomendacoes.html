@@ -14,57 +14,63 @@
 <body>
   {% include 'menu.html' %}
 
-
   <div id="recomendacoes" style="background: #000;">
     <p class="" style="text-align: center; padding: 40px 10px 10px 10px;">Configure abaixo seus gêneros favoritos e a nota mínima (TMDb) para os títulos.</p>
-    <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
       Configurar preferências
     </button>
   </div>
 
-
-
   <div class="painel-titulos" style="background: radial-gradient(at 60% 80%, transparent 30%, rgba(0, 0, 0, 0.15) 90%, rgba(0, 0, 0, 0.1) 95%, rgba(0, 0, 0, 0) 100%) 100% 50% / cover, linear-gradient(rgb(0, 0, 0) 0%, transparent 90%);">
+    
+    <!-- Filmes -->
     <h1 class="titulos-titulo">
       Filmes 
-      <span><a class="ver-mais-titulos" href="{% url 'filmes' %}"><i class="fa-solid fa-angles-right"></i>Veja mais</a></span>
     </h1>  
-    {% for recomendado in recomendados %}
-      {% if recomendado.tipo == "filme" %}
-        <a href="{% url 'pagina_filme' url_slug=recomendado.slug %}">
-            <div class="container-titulos">
-                <img class="image" src="https://image.tmdb.org/t/p/original/{{ recomendado.posterPath }}" alt="{{ recomendado.titulo }} - Capa">
-                <div class="overlay">
-                    <p>{{ recomendado.titulo }}</p>
-                </div>
-            </div>  
-        </a>
+    
+    {% with filmes=recomendados|dictsort:"tipo" %}
+      {% if filmes %}
+        {% for recomendado in recomendados %}
+          {% if recomendado.tipo == "filme" %}
+            <a href="{% url 'pagina_filme' url_slug=recomendado.slug %}">
+                <div class="container-titulos">
+                    <img class="image" src="https://image.tmdb.org/t/p/original/{{ recomendado.posterPath }}" alt="{{ recomendado.titulo }} - Capa">
+                    <div class="overlay">
+                        <p>{{ recomendado.titulo }}</p>
+                    </div>
+                </div>  
+            </a>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <p style="text-align: center; color: #FFF; padding: 40px;">😟 Ops! Não encontramos nenhum filme que corresponda à sua configuração atual. Se ainda não definiu suas preferências, clique no botão acima para configurá-las. Caso já tenha feito isso, tente ajustar suas escolhas e buscar novamente.</p>
       {% endif %}
-    {% endfor %}
-   
- 
+    {% endwith %}
+    
+    <!-- Séries -->
     <h1 class="titulos-titulo">
       Séries
-      <span><a class="ver-mais-titulos" href="{% url 'series' %}"><i class="fa-solid fa-angles-right"></i>Veja mais</a></span>
     </h1> 
-  
-    {% for recomendado in recomendados %}
-    {% if recomendado.tipo == "serie" %}
-      <a href="{% url 'pagina_serie' url_slug=recomendado.slug %}">
-          <div class="container-titulos">
-              <img class="image" src="https://image.tmdb.org/t/p/original/{{ recomendado.posterPath }}" alt="{{ recomendado.titulo }} - Capa">
-              <div class="overlay">
-                  <p>{{ recomendado.titulo }}</p>
-              </div>
-          </div>  
-      </a>
-    {% endif %}
-  {% endfor %}
-
+    
+    {% with series=recomendados|dictsort:"tipo" %}
+      {% if series %}
+        {% for recomendado in recomendados %}
+          {% if recomendado.tipo == "serie" %}
+            <a href="{% url 'pagina_serie' url_slug=recomendado.slug %}">
+                <div class="container-titulos">
+                    <img class="image" src="https://image.tmdb.org/t/p/original/{{ recomendado.posterPath }}" alt="{{ recomendado.titulo }} - Capa">
+                    <div class="overlay">
+                        <p>{{ recomendado.titulo }}</p>
+                    </div>
+                </div>  
+            </a>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <p style="text-align: center; color: #FFF; padding: 40px;">😟 Ops! Não encontramos nenhum série que corresponda à sua configuração atual. Se ainda não definiu suas preferências, clique no botão acima para configurá-las. Caso já tenha feito isso, tente ajustar suas escolhas e buscar novamente.</p>
+      {% endif %}
+    {% endwith %}
   </div> 
-  
-
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -83,12 +89,10 @@
                   <label for="nota_minima" style="font-weight: bold; font-size: 18px;">Nota mínima:</label>
                   <input class="inputs" type="number" name="nota_minima" id="nota_minima" value="{{ nota_minima }}" required step="0.1">
               </div>
-        
-        
-        
+
               <fieldset>
                   <legend class="topico" style="padding: 10px;">Seus gêneros favoritos:</legend>
-                  <div class="checkbox-container" s>
+                  <div class="checkbox-container">
                       {% for genero in generos %}
                           <div class="checkbox-item">
                               <input type="checkbox" name="generos" value="{{ genero.id }}" id="genero_{{ genero.id }}"
@@ -103,13 +107,14 @@
         
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" style="width: 180px;" data-dismiss="modal">Fechar</button>
-            <button  class="btn" style="width: 180px!important; bac" type="submit">Salvar Preferências</button>
+            <button class="btn" style="width: 180px!important;" type="submit">Salvar Preferências</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-    {% include 'footer.html' %}
+  
+  {% include 'footer.html' %}
 </body>
 
 </html>

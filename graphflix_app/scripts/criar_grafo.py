@@ -11,7 +11,7 @@ def criar_grafo():
         }
     }
 
-    # Populando o grafo com dados dos modelos do Django
+        # populando o grafo com dados dos título e gêneros
     for genero in Genero.objects.all():
         grafo["generos"][genero.id] = genero.nome_genero
 
