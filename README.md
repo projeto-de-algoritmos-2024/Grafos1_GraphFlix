@@ -60,9 +60,9 @@ docker build -t graphflix_app .
 Inicie o contêiner Docker:
 
 ```
-docker run -d -p 8080:80 -v ./:/usr/share/nginx/html graphflix_app
+docker compose up
 ```
-Acesse em um navegador digitando `http://localhost:8080`
+Acesse em um navegador digitando `http://0.0.0.0:8000/`
 
 
 
