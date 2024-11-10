@@ -32,7 +32,7 @@
     </h1>  
     {% for recomendado in recomendados %}
       {% if recomendado.tipo == "filme" %}
-        <a href="{% url 'pagina_serie' url_slug=recomendado.id %}">
+        <a href="{% url 'pagina_filme' url_slug=recomendado.slug %}">
             <div class="container-titulos">
                 <img class="image" src="https://image.tmdb.org/t/p/original/{{ recomendado.posterPath }}" alt="{{ recomendado.titulo }} - Capa">
                 <div class="overlay">
@@ -51,7 +51,7 @@
   
     {% for recomendado in recomendados %}
     {% if recomendado.tipo == "serie" %}
-      <a href="{% url 'pagina_serie' url_slug=recomendado.id %}">
+      <a href="{% url 'pagina_serie' url_slug=recomendado.slug %}">
           <div class="container-titulos">
               <img class="image" src="https://image.tmdb.org/t/p/original/{{ recomendado.posterPath }}" alt="{{ recomendado.titulo }} - Capa">
               <div class="overlay">
